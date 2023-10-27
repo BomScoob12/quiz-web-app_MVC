@@ -1,6 +1,6 @@
 package com.practices.quizservlet_practices.utils;
 
-import int202.serverside.quizservlet_practices.model.Question;
+import com.practices.quizservlet_practices.model.Question;
 import lombok.Getter;
 
 import java.io.BufferedReader;
