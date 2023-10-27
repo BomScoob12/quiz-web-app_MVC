@@ -4,14 +4,18 @@ import lombok.*;
 
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
+@ToString
 public class QuizSession {
     private List<Question> questions;
     private int currentQuestionIndex;
     private int correctAnswerCount;
+
+    public QuizSession(List<Question> list){
+        this.questions = list;
+    }
 
     public Question getCurrentQuestion(){
         return questions.get(currentQuestionIndex);
@@ -36,7 +40,4 @@ public class QuizSession {
         return currentQuestionIndex >= questions.size();
     }
 
-    private void fetchData(){
-
-    }
 }
