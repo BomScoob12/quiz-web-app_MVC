@@ -14,10 +14,10 @@ public class QuizHistoryController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Cookie[] cookies = req.getCookies();
-        for (int i = 0; i<cookies.length; i++){
-            if(cookies[i].getName().equals("scoreHistory")){
-                String name = cookies[i].getName();
-                String value = cookies[i].getValue();
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("scoreHistory")) {
+                String name = cookie.getName();
+                String value = cookie.getValue();
                 req.setAttribute("scoreHistoryName", name);
                 req.setAttribute("scoreHistory", value);
             }

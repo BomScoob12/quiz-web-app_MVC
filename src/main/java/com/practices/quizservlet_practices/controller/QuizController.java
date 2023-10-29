@@ -38,16 +38,14 @@ public class QuizController extends HttpServlet {
             req.getRequestDispatcher("index.jsp").forward(req, resp);
             return;
         }
-
         QuizSession quizSession = (QuizSession) session.getAttribute("quiz");
-        String action = req.getParameter("action");
 
         if (req.getParameter("nextButton") != null && !quizSession.isQuizOver()) {
             int selectedOption = Integer.parseInt(req.getParameter("selectedOption"));
             quizSession.checkAnswer(selectedOption);
             quizSession.moveToNextQuestions();
         } else if (req.getParameter("submitButton") != null) {
-            session.setAttribute("getAnswerCount", quizSession.getCorrectAnswerCount());
+            req.setAttribute("getAnswerCount", quizSession.getCorrectAnswerCount());
             Cookie cookie = new Cookie("scoreHistory", String.valueOf(quizSession.getCorrectAnswerCount()));
             cookie.setMaxAge(6400);
             resp.addCookie(cookie);

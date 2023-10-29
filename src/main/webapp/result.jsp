@@ -12,7 +12,7 @@
 </head>
 <body>
 <h1>Congratulations</h1>
-<div>You got : ${sessionScope.getAnswerCount}</div>
+<div>You got : ${requestScope.getAnswerCount}</div>
 <a href="./index.jsp">Back to index</a>
 </body>
 </html>
