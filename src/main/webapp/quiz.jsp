@@ -7,32 +7,27 @@
 --%>
 <%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
->
 <html>
 <head>
     <title>QUIZZES</title>
 </head>
 <body>
 <h1>Quiz</h1>
-<%--${questions is scope of request}--%>
-<jsp:useBean id="questions" scope="request" type="java.util.List"/>
 <c:choose>
-    <c:when test="${questions == null}">
+    <c:when test="${sessionScope.quiz == null}">
         Questions not found.
     </c:when>
     <c:otherwise>
-        <c:forEach items="${questions}" var="question" varStatus="count">
-            ${count.index+1}. ${question.getQuestionText()} <br>
-            <form action="quiz-controller" method="post">
-                <c:forEach items="${question.getOptions()}" var="option">
-                    <label>
-                        <input type="radio" name="option" value="${option}">
-                    </label> ${option} <br>
-                </c:forEach>
-                <br>
-                <input type="submit" value="Save">
-            </form>
+        <form action="quiz-controller">
+        <c:out value="${sessionScope.currentQuestionIndex}" default="0"/>
+        <h1>${sessionScope.currentQuestion.getQuestionText()}</h1>
+        <c:forEach items="${sessionScope.currentQuestion.getOptions()}" var="option" varStatus="ct">
+            <input type="radio" value="${ct.index}"> ${option} <br>
         </c:forEach>
+        <br>
+        <input type="button" name="nextButton" value="Next Questions">
+        <input type="submit" name="submit" value="Submit">
+        </form>
     </c:otherwise>
 </c:choose>
 </body>
