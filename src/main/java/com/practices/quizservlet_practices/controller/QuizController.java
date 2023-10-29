@@ -51,7 +51,7 @@ public class QuizController extends HttpServlet {
             HttpSession session = req.getSession(false);
             QuizSession quizSession = (QuizSession) session.getAttribute("quiz");
             session.setAttribute("answerCount", quizSession.getCorrectAnswerCount());
-            req.getRequestDispatcher("result").forward(req, resp);
+            req.getRequestDispatcher("result.jsp").forward(req, resp);
         }
     }
 }

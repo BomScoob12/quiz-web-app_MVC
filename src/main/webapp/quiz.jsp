@@ -25,8 +25,15 @@
                 <input type="radio" value="${ct.index}" name="selectedOption"> ${option} <br>
             </c:forEach>
             <br>
-            <input type="submit" name="nextButton" value="Next">
-            <input type="submit" name="submitButton" value="Submit">
+            <c:choose>
+                <c:when test="${sessionScope.currentQuestionIndex < sessionScope.quiz.getQuestions().size() - 1}">
+                    <input type="submit" name="nextButton" value="Next">
+                </c:when>
+                <c:otherwise>
+                    <!-- No "Next" button on the last question and index = length - 1 -->
+                    <input type="submit" name="submitButton" value="Submit">
+                </c:otherwise>
+            </c:choose>
         </form>
     </c:otherwise>
 </c:choose>
