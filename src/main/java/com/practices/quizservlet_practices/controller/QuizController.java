@@ -18,40 +18,55 @@ import java.util.List;
 public class QuizController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        List<Question> questionList = CSVLoader.getQuestions();
-        QuizSession quizSession = new QuizSession(questionList);
-        System.out.println(quizSession);
-        if (session != null) {
-            session.setAttribute("quiz", quizSession);
-            session.setAttribute("currentQuestionIndex", quizSession.getCurrentQuestionIndex());
-            session.setAttribute("currentQuestion", quizSession.getCurrentQuestion());
-        } else {
+        HttpSession session = req.getSession();
+        if (session == null) {
+            // Handle the case where there's no session (e.g., session expired)
+            req.getRequestDispatcher("index.jsp").forward(req, resp);
             return;
         }
+        List<Question> questionList = CSVLoader.getQuestions();
+        QuizSession quizSession = new QuizSession(questionList);
+
+        session.setAttribute("quiz", quizSession);
+        session.setAttribute("currentQuestionIndex", quizSession.getCurrentQuestionIndex());
+        session.setAttribute("currentQuestion", quizSession.getCurrentQuestion());
 
         req.getRequestDispatcher("quiz.jsp").forward(req, resp);
     }
 
-    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession(false);
+        if (session == null) {
+            // Handle the case where there's no session (e.g., session expired)
+            req.getRequestDispatcher("index.jsp").forward(req, resp);
+            return;
+        }
+
+        QuizSession quizSession = (QuizSession) session.getAttribute("quiz");
+        String action = req.getParameter("action");
+
         if (req.getParameter("nextButton") != null) {
-            HttpSession session = req.getSession(false);
-            QuizSession quizSession = (QuizSession) session.getAttribute("quiz");
             int selectedOption = Integer.parseInt(req.getParameter("selectedOption"));
             quizSession.checkAnswer(selectedOption);
             quizSession.moveToNextQuestions();
-            //update session
-            session.setAttribute("quiz", quizSession);
-            session.setAttribute("currentQuestionIndex", quizSession.getCurrentQuestionIndex());
-            session.setAttribute("currentQuestion", quizSession.getCurrentQuestion());
-            //get back to jsp
-            req.getRequestDispatcher("quiz.jsp").forward(req, resp);
         } else if (req.getParameter("submitButton") != null) {
-            HttpSession session = req.getSession(false);
-            QuizSession quizSession = (QuizSession) session.getAttribute("quiz");
-            session.setAttribute("answerCount", quizSession.getCorrectAnswerCount());
+            session.setAttribute("getAnswerCount", quizSession.getCorrectAnswerCount());
             req.getRequestDispatcher("result.jsp").forward(req, resp);
+        } else if (req.getParameter("resetButton") != null) {
+            session.invalidate();
+            resp.sendRedirect("index.jsp");
+            return;
+        } else {
+            resp.sendRedirect("index.jsp");
+            return;
         }
+
+        // Update session attributes
+        session.setAttribute("quiz", quizSession);
+        session.setAttribute("currentQuestionIndex", quizSession.getCurrentQuestionIndex());
+        session.setAttribute("currentQuestion", quizSession.getCurrentQuestion());
+
+        req.getRequestDispatcher("quiz.jsp").forward(req, resp);
     }
+
 }

@@ -8,9 +8,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Result</title>
 </head>
 <body>
-
+<h1>Congratulations</h1>
+<div>You got : ${sessionScope.getAnswerCount}</div>
+<a href="./index.jsp">Back to index</a>
 </body>
 </html>

@@ -25,6 +25,7 @@
                 <input type="radio" value="${ct.index}" name="selectedOption"> ${option} <br>
             </c:forEach>
             <br>
+            <input type="submit" name="resetButton" value="Reset">
             <c:choose>
                 <c:when test="${sessionScope.currentQuestionIndex < sessionScope.quiz.getQuestions().size() - 1}">
                     <input type="submit" name="nextButton" value="Next">
