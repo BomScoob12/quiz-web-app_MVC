@@ -64,7 +64,7 @@ public class QuizController extends HttpServlet {
         session.setAttribute("currentQuestionIndex", quizSession.getCurrentQuestionIndex());
         session.setAttribute("currentQuestion", quizSession.getCurrentQuestion());
 
-        req.getRequestDispatcher("quiz.jsp").forward(req, resp);
+        resp.sendRedirect("quiz.jsp");
     }
 
 }
