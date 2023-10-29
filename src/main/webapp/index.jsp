@@ -9,5 +9,6 @@
 </h1>
 <br/>
 <a href="quiz-controller">Hello Servlet</a>
+<a href="quiz-history">Result history</a>
 </body>
 </html>

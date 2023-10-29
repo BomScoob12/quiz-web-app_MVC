@@ -6,10 +6,7 @@ import com.practices.quizservlet_practices.model.QuizSession;
 import com.practices.quizservlet_practices.utils.CSVLoader;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,12 +42,15 @@ public class QuizController extends HttpServlet {
         QuizSession quizSession = (QuizSession) session.getAttribute("quiz");
         String action = req.getParameter("action");
 
-        if (req.getParameter("nextButton") != null) {
+        if (req.getParameter("nextButton") != null && !quizSession.isQuizOver()) {
             int selectedOption = Integer.parseInt(req.getParameter("selectedOption"));
             quizSession.checkAnswer(selectedOption);
             quizSession.moveToNextQuestions();
         } else if (req.getParameter("submitButton") != null) {
             session.setAttribute("getAnswerCount", quizSession.getCorrectAnswerCount());
+            Cookie cookie = new Cookie("scoreHistory", String.valueOf(quizSession.getCorrectAnswerCount()));
+            cookie.setMaxAge(6400);
+            resp.addCookie(cookie);
             req.getRequestDispatcher("result.jsp").forward(req, resp);
         } else if (req.getParameter("resetButton") != null) {
             session.invalidate();
