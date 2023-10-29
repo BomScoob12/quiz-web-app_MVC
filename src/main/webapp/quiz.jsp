@@ -18,15 +18,15 @@
         Questions not found.
     </c:when>
     <c:otherwise>
-        <form action="quiz-controller">
-        <c:out value="${sessionScope.currentQuestionIndex}" default="0"/>
-        <h1>${sessionScope.currentQuestion.getQuestionText()}</h1>
-        <c:forEach items="${sessionScope.currentQuestion.getOptions()}" var="option" varStatus="ct">
-            <input type="radio" value="${ct.index}"> ${option} <br>
-        </c:forEach>
-        <br>
-        <input type="button" name="nextButton" value="Next Questions">
-        <input type="submit" name="submit" value="Submit">
+        <form action="quiz-controller" method="post">
+            <c:out value="${sessionScope.currentQuestionIndex}" default="0"/>
+            <h1>${sessionScope.currentQuestion.getQuestionText()}</h1>
+            <c:forEach items="${sessionScope.currentQuestion.getOptions()}" var="option" varStatus="ct">
+                <input type="radio" value="${ct.index}" name="selectedOption"> ${option} <br>
+            </c:forEach>
+            <br>
+            <input type="submit" name="nextButton" value="Next">
+            <input type="submit" name="submitButton" value="Submit">
         </form>
     </c:otherwise>
 </c:choose>
